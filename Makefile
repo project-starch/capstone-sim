@@ -203,8 +203,18 @@ sim: $(fw_jump) $(spike)
 qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
 		-netdev user,id=net0 -device virtio-net-device,netdev=net0
+
+.PHONY: debug-spike
+debug-spike: $(fw_jump) $(spike)
+	gdb --args $(spike) --isa=$(ISA) -p4 --kernel $(linux_image) $(fw_jump)
+
 else ifeq ($(BL),bbl)
 .PHONY: sim
 sim: $(bbl) $(spike)
 	$(spike) --isa=$(ISA) -p4 $(bbl)
+
+.PHONY: debug-spike
+debug-spike: $(bbl) $(spike)
+	gdb --args $(spike) --isa=$(ISA) -p4 $(bbl)
 endif
+

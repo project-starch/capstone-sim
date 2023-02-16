@@ -6,13 +6,13 @@
 	url = https://github.com/buildroot/buildroot.git
 [submodule "linux"]
 	path = repo/linux
-	url = https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git
+	url = git@github.com:jasonyu1996/transcapstone-linux.git
 [submodule "riscv-pk"]
 	path = repo/riscv-pk
 	url = https://github.com/riscv/riscv-pk
 [submodule "riscv-isa-sim"]
 	path = repo/riscv-isa-sim
-	url = https://github.com/riscv/riscv-isa-sim
+	url = git@github.com:jasonyu1996/transcapstone-spike.git
 [submodule "opensbi"]
 	path = repo/opensbi
 	url = https://github.com/riscv-software-src/opensbi

@@ -201,3 +201,14 @@ Requesting system poweroff
 ```
 
 Finally, if you have any suggestions for this SDK, please *push* it !
+
+# Added for TransCapstone
+
+## Spike debugging
+
+To debug Spike using GDB, use 
+
+```
+make debug-spike
+```
+
