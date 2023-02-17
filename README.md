@@ -212,3 +212,15 @@ To debug Spike using GDB, use
 make debug-spike
 ```
 
+## Specify the number of harts
+
+The default is 4. To override this number,
+set the `SPIKE_NCORES` variable for `make`.
+For example:
+
+
+```
+make SPIKE_NCORES=1
+```
+
+

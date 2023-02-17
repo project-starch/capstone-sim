@@ -6,6 +6,7 @@ ISA ?= rv64imafdc
 ABI ?= lp64d
 # choose opensbi or bbl here
 BL ?= opensbi
+SPIKE_NCORES ?= 4
 
 topdir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir := $(topdir:/=)
@@ -198,7 +199,7 @@ clean:
 ifeq ($(BL),opensbi)
 .PHONY: sim
 sim: $(fw_jump) $(spike)
-	$(spike) --isa=$(ISA) -p4 --kernel $(linux_image) $(fw_jump)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
 .PHONY: qemu
 qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
@@ -206,15 +207,15 @@ qemu: $(qemu) $(fw_jump)
 
 .PHONY: debug-spike
 debug-spike: $(fw_jump) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p4 --kernel $(linux_image) $(fw_jump)
+	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
 .PHONY: sim
 sim: $(bbl) $(spike)
-	$(spike) --isa=$(ISA) -p4 $(bbl)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
 
 .PHONY: debug-spike
 debug-spike: $(bbl) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p4 $(bbl)
+	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
 endif
 
