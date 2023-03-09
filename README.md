@@ -212,6 +212,12 @@ To debug Spike using GDB, use
 make debug-spike
 ```
 
+To check memory leak of Spike using Valgrind, use 
+
+```
+make valgrind-spike
+```
+
 ## Specify the number of harts
 
 The default is 4. To override this number,
