@@ -208,6 +208,9 @@ qemu: $(qemu) $(fw_jump)
 .PHONY: debug-spike
 debug-spike: $(fw_jump) $(spike)
 	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
+.PHONY: valgrind-spike
+valgrind-spike: $(fw_jump) $(spike)
+	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
 .PHONY: sim
@@ -217,5 +220,8 @@ sim: $(bbl) $(spike)
 .PHONY: debug-spike
 debug-spike: $(bbl) $(spike)
 	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
+.PHONY: valgrind-spike
+valgrind-spike: $(bbl) $(spike)
+	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
 endif
 
