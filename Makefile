@@ -6,7 +6,7 @@ ISA ?= rv64imafdc
 ABI ?= lp64d
 # choose opensbi or bbl here
 BL ?= opensbi
-SPIKE_NCORES ?= 4
+SPIKE_NCORES ?= 1
 
 topdir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir := $(topdir:/=)
@@ -205,23 +205,21 @@ qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
 		-netdev user,id=net0 -device virtio-net-device,netdev=net0
 
-.PHONY: debug-spike
+.PHONY: sim-transcapstone
+sim-transcapstone: $(fw_jump) $(spike)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 --kernel $(linux_image) $(fw_jump)
+.PHONY: debug-transcapstone
+debug-transcapstone: $(fw_jump) $(spike)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
+.PHONY: gdb-transcapstone
 debug-spike: $(fw_jump) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
-.PHONY: valgrind-spike
+	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
+.PHONY: valgrind-transcapstone
 valgrind-spike: $(fw_jump) $(spike)
-	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
+	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
 .PHONY: sim
 sim: $(bbl) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
-
-.PHONY: debug-spike
-debug-spike: $(bbl) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
-.PHONY: valgrind-spike
-valgrind-spike: $(bbl) $(spike)
-	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) $(bbl)
 endif
-
