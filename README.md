@@ -211,6 +211,12 @@ make sim-transcapstone // start without debug (backdoor) instructions
 make debug-transcapstone // start with debug (backdoor) instructions
 ```
 
+If you want to run Spike using its interface in CLI (after first `make`, of course), you can make changes to the following command:
+
+```
+./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -D --kernel ./build/linux/arch/riscv/boot/Image ./build/opensbi/platform/generic/firmware/fw_jump.elf
+```
+
 ## Spike debugging
 
 To debug Spike using GDB, use 
