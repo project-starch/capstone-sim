@@ -7,6 +7,7 @@ ABI ?= lp64d
 # choose opensbi or bbl here
 BL ?= opensbi
 SPIKE_NCORES ?= 1
+CAPSTONE_MEM ?= 0x100000000:0x80000000
 
 topdir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir := $(topdir:/=)
@@ -207,16 +208,16 @@ qemu: $(qemu) $(fw_jump)
 
 .PHONY: sim-transcapstone
 sim-transcapstone: $(fw_jump) $(spike)
-	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 --kernel $(linux_image) $(fw_jump)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} --kernel $(linux_image) $(fw_jump)
 .PHONY: debug-transcapstone
 debug-transcapstone: $(fw_jump) $(spike)
-	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
 .PHONY: gdb-transcapstone
-debug-spike: $(fw_jump) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
+gdb-transcapstone: $(fw_jump) $(spike)
+	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
 .PHONY: valgrind-transcapstone
-valgrind-spike: $(fw_jump) $(spike)
-	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M0x100000000:0x80000000 -D --kernel $(linux_image) $(fw_jump)
+valgrind-transcapstone: $(fw_jump) $(spike)
+	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
 .PHONY: sim
