@@ -204,29 +204,43 @@ Finally, if you have any suggestions for this SDK, please *push* it !
 
 # Added for TransCapstone
 
+## Transcapstone default startup
+
+```
+make sim-transcapstone // start without debug (backdoor) instructions
+make debug-transcapstone // start with debug (backdoor) instructions
+```
+
 ## Spike debugging
 
 To debug Spike using GDB, use 
 
 ```
-make debug-spike
+make gdb-transcapstone
 ```
 
 To check memory leak of Spike using Valgrind, use 
 
 ```
-make valgrind-spike
+make valgrind-transcapstone
 ```
 
 ## Specify the number of harts
 
-The default is 4. To override this number,
+The default is 1. To override this number,
 set the `SPIKE_NCORES` variable for `make`.
 For example:
 
+```
+make SPIKE_NCORES=4
+```
+
+## Specify the secure-world memory region
+
+The default is `0x100000000:0x80000000`. To override this number,
+set the `CAPSTONE_MEM` variable for `make` when TransCapstone is enabled.
+For example:
 
 ```
-make SPIKE_NCORES=1
+make sim-transcapstone CAPSTONE_MEM=0x100000000:0x40000000
 ```
-
-
