@@ -165,7 +165,7 @@ $(fw_jump): $(opensbi_srcdir) $(linux_image) $(RISCV)/bin/$(target_linux)-gcc
 	$(MAKE) -C $(opensbi_srcdir) FW_PAYLOAD_PATH=$(linux_image) PLATFORM=generic O=$(opensbi_wrkdir) CROSS_COMPILE=riscv64-unknown-linux-gnu-
 
 $(spike): $(spike_srcdir) 
-	rm -rf $(spike_wrkdir)
+#	rm -rf $(spike_wrkdir)
 	mkdir -p $(spike_wrkdir)
 	mkdir -p $(dir $@)
 	cd $(spike_wrkdir) && $</configure \
@@ -205,6 +205,8 @@ sim: $(fw_jump) $(spike)
 qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
 		-netdev user,id=net0 -device virtio-net-device,netdev=net0
+.PHONY: pk
+pk: $(pk), $(spike)
 
 .PHONY: sim-transcapstone
 sim-transcapstone: $(fw_jump) $(spike)
