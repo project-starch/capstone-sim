@@ -29,17 +29,16 @@ curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo \
 gperf libtool patchutils bc zlib1g-dev libexpat-dev python-dev python3-dev unzip \
 libglib2.0-dev libpixman-1-dev git rsync wget cpio
 ```
+NOTICE: If you already have a riscv toolchain, please notice ** DO NOT SET `$RISCV` and MAKE SURE NO ORIGIN RISCV TOOLCHAIN IN YOUR `$PATH` **.
+
 ```bash
 git clone https://github.com/riscv-zju/riscv-rss-sdk.git
 
-# For people who only want to have a try
-sh quickstart.sh
-# For people who want to develop the whole system
+# For people who only want to have a try, use following the script insead:
+# sh quickstart.sh
+
 git submodule update --init --recursive --progress
 
-#	NOTICE: 
-# 		If you already have a riscv toolchain, please notice ** DO NOT SET
-#		 $RISCV and MAKE SURE NO ORIGIN RISCV TOOLCHAIN IN YOUR $PATH **
 make
 ```
 
