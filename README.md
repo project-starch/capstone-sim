@@ -222,6 +222,12 @@ If you want to run Spike using proxy kernel, you can make changes to the followi
 ./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -D ./build/riscv-pk/pk [path-to-your-program]
 ```
 
+If you want to run Spike in pure Capstone mode, you can make changes to the following command (after `make pk` first):
+
+```
+./toolchain/bin/spike --isa=rv64imafdc -p1 -C ./build/riscv-pk/pk [path-to-your-program]
+```
+
 ## Spike debugging
 
 To debug Spike using GDB, use 
