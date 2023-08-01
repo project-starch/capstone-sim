@@ -32,6 +32,12 @@ cd transcapstone-sim/container
 make
 ```
 
+If you have your own Apptainer image and want to prevent `make` from building one, you can set `EXTERNAL_CONTAINER_IMG`:
+
+```
+make EXTERNAL_CONTAINER_IMG=<path-to-your-image>
+```
+
 ## Build the SDK
 
 Build dependencies on Ubuntu 16.04/18.04/20.04:
