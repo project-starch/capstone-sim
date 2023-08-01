@@ -17,6 +17,6 @@
 	path = repo/opensbi
 	url = https://github.com/riscv-software-src/opensbi
 [submodule "capstone-testsuite"]
-	path = capstone-testsuite
+	path = repo/capstone-testsuite
 	url = git@github.com:project-starch/capstone-testsuite.git
 
