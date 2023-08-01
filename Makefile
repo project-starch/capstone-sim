@@ -6,8 +6,9 @@ ISA ?= rv64imafdc
 ABI ?= lp64d
 # choose opensbi or bbl here
 BL ?= opensbi
+# capstone-specific arguments
 SPIKE_NCORES ?= 1
-CAPSTONE_MEM ?= 0x100000000:0x80000000
+SPIKE_SECURE_MEM ?= 0x100000000:0x80000000
 
 topdir := $(dir $(realpath $(lastword $(MAKEFILE_LIST))))
 topdir := $(topdir:/=)
@@ -55,10 +56,9 @@ target_linux  := riscv64-unknown-linux-gnu
 target_newlib := riscv64-unknown-elf
 
 .PHONY: all
-all: sim
+all: $(fw_jump) $(spike)
 
 newlib: $(RISCV)/bin/$(target_newlib)-gcc
-
 
 ifneq ($(RISCV),$(toolchain_dest))
 $(RISCV)/bin/$(target_linux)-gcc:
@@ -197,29 +197,35 @@ fw_image: $(fw_jump)
 clean:
 	rm -rf -- $(wrkdir) $(toolchain_dest)
 
+# Use Spike with Proxy Kernel
+.PHONY: spike-pk
+spike-pk: $(pk), $(spike)
+
 ifeq ($(BL),opensbi)
+# Simulate normal RISC-V Linux
 .PHONY: sim
 sim: $(fw_jump) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) --kernel $(linux_image) $(fw_jump)
+# Simulate normal RISC-V Linux with QEMU
 .PHONY: qemu
 qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
 		-netdev user,id=net0 -device virtio-net-device,netdev=net0
-.PHONY: pk
-pk: $(pk), $(spike)
-
+# Simulate TransCasptone (Capstone-RISC-V)
 .PHONY: sim-transcapstone
 sim-transcapstone: $(fw_jump) $(spike)
-	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} --kernel $(linux_image) $(fw_jump)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} --kernel $(linux_image) $(fw_jump)
+
+# Debugging
 .PHONY: debug-transcapstone
 debug-transcapstone: $(fw_jump) $(spike)
-	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
+	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
 .PHONY: gdb-transcapstone
 gdb-transcapstone: $(fw_jump) $(spike)
-	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
+	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
 .PHONY: valgrind-transcapstone
 valgrind-transcapstone: $(fw_jump) $(spike)
-	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${CAPSTONE_MEM} -D --kernel $(linux_image) $(fw_jump)
+	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
 .PHONY: sim

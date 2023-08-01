@@ -255,9 +255,9 @@ make SPIKE_NCORES=4
 ## Specify the secure-world memory region
 
 The default is `0x100000000:0x80000000`. To override this number,
-set the `CAPSTONE_MEM` variable for `make` when TransCapstone is enabled.
+set the `SPIKE_SECURE_MEM` variable for `make` when TransCapstone is enabled.
 For example:
 
 ```
-make sim-transcapstone CAPSTONE_MEM=0x100000000:0x40000000
+make sim-transcapstone SPIKE_SECURE_MEM=0x100000000:0x40000000
 ```
