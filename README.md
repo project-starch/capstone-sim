@@ -23,24 +23,13 @@ The functions of each folder in the project are as follows:
 
 The easiest way to get started is to use the [Apptainer](https://apptainer.org/) image defined in the `container` folder.
 This will build the toolchain and the [Spike](https://github.com/project-starch/transcapstone-spike) simulator,
-and then run the simulator with Capstone-RISC-V extension.
+and then run the simulation of the Capstone-RISC-V processor.
 Make sure you have Apptainer already installed and simply run `make` inside the `container` folder.
 
 ```bash
 git clone https://github.com/project-starch/transcapstone-sim.git
 cd transcapstone-sim/container
 make
-```
-If you have your own Apptainer image and want to prevent `make` from building one, you can set `EXTERNAL_CONTAINER_IMG`:
-
-```
-make EXTERNAL_CONTAINER_IMG=<path-to-your-image>
-```
-
-If you want to change the default size of the normal memory and the secure world, you can set `SPIKE_NORMAL_MEM` and `SPIKE_SECURE_MEM`:
-
-```bash
-make SPIKE_NORMAL_MEM=0x80000000:0x80000000 SPIKE_SECURE_MEM=0x100000000:0x80000000
 ```
 
 ## Build the SDK
@@ -60,19 +49,20 @@ libglib2.0-dev libpixman-1-dev git rsync wget cpio
 git clone https://github.com/project-starch/transcapstone-sim.git
 cd transcapstone-sim
 git submodule update --init --recursive --progress
-make sim-transcapstone
+sudo make
 ```
 
 ## Specify Spike Parameters
 
+> Note: Build the SDK first. You can use `sudo make spike-pk` to build without running the simulation.
+
 ### Specify the number of harts
 
-The default is 1. To override this number,
-set the `SPIKE_NCORES` variable for `make`.
+The default is 1. To override this number, set the `SPIKE_NCORES` variable for `make`.
 For example:
 
-```
-make sim-transcapstone SPIKE_NCORES=4
+```bash
+make SPIKE_NCORES=4
 ```
 
 ### Specify the secure-world memory region
@@ -81,8 +71,8 @@ The default is `0x100000000:0x80000000`. To override this number,
 set the `SPIKE_SECURE_MEM` variable for `make`.
 For example:
 
-```
-make sim-transcapstone SPIKE_SECURE_MEM=0x100000000:0x40000000
+```bash
+make SPIKE_SECURE_MEM=0x100000000:0x40000000
 ```
 
 ### Use command line directly
@@ -90,7 +80,7 @@ make sim-transcapstone SPIKE_SECURE_MEM=0x100000000:0x40000000
 If you want to run Spike using its interface in CLI, you can make changes to the following command:
 
 ```bash
-make
+make spike-fw
 ```
 
 ```bash
@@ -107,23 +97,35 @@ make spike-pk
 ./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -D ./build/riscv-pk/pk [path-to-your-program]
 ```
 
-## Debugging
+## File System in Simulation
+
+After building the SDK, you can find the file system in `build/buildroot_initramfs_sysroot`.
+You can copy the files to this folder, update the timestamp of the folder,
+and rebuild the SDK to update the file system.
+
+## For Developers
+
+### Rebuild the SDK
+
+If you want to rebuild the SDK after modifying the source code of any of the submodules,
+you need to update the timestamp of the submodules first and rebuild the SDK.
+
+### Debugging
 
 To enable debugging instructions in Spike, use
 
-```
+```bash
 make debug-transcapstone
 ```
 
 To debug Spike using GDB with debugging instructions, use 
 
-```
+```bash
 make gdb-transcapstone
 ```
 
 To check memory leak of Spike using Valgrind with debugging instructions, use 
 
-```
+```bash
 make valgrind-transcapstone
 ```
-

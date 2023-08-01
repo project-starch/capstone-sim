@@ -56,7 +56,7 @@ target_linux  := riscv64-unknown-linux-gnu
 target_newlib := riscv64-unknown-elf
 
 .PHONY: all
-all: $(fw_jump) $(spike)
+all: sim-transcapstone
 
 newlib: $(RISCV)/bin/$(target_newlib)-gcc
 
@@ -165,7 +165,7 @@ $(fw_jump): $(opensbi_srcdir) $(linux_image) $(RISCV)/bin/$(target_linux)-gcc
 	$(MAKE) -C $(opensbi_srcdir) FW_PAYLOAD_PATH=$(linux_image) PLATFORM=generic O=$(opensbi_wrkdir) CROSS_COMPILE=riscv64-unknown-linux-gnu-
 
 $(spike): $(spike_srcdir) 
-#	rm -rf $(spike_wrkdir)
+	rm -rf $(spike_wrkdir)
 	mkdir -p $(spike_wrkdir)
 	mkdir -p $(dir $@)
 	cd $(spike_wrkdir) && $</configure \
@@ -197,10 +197,6 @@ fw_image: $(fw_jump)
 clean:
 	rm -rf -- $(wrkdir) $(toolchain_dest)
 
-# Use Spike with Proxy Kernel
-.PHONY: spike-pk
-spike-pk: $(pk), $(spike)
-
 ifeq ($(BL),opensbi)
 # Simulate normal RISC-V Linux
 .PHONY: sim
@@ -215,6 +211,13 @@ qemu: $(qemu) $(fw_jump)
 .PHONY: sim-transcapstone
 sim-transcapstone: $(fw_jump) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} --kernel $(linux_image) $(fw_jump)
+
+# Only build dependencies
+.PHONY: spike-fw
+spike-fw: $(fw_jump) $(spike)
+# Use Spike with Proxy Kernel
+.PHONY: spike-pk
+spike-pk: $(pk), $(spike)
 
 # Debugging
 .PHONY: debug-transcapstone

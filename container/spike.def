@@ -1,0 +1,30 @@
+BootStrap: docker
+From: ubuntu:20.04
+
+%post
+    chmod 755 /root
+    apt -y update
+    export DEBIAN_FRONTEND=noninteractive
+    export TZ=Asia/Singapore
+    apt -y upgrade
+    apt -y install device-tree-compiler autoconf automake autotools-dev \
+        curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo \
+        gperf libtool patchutils bc zlib1g-dev libexpat-dev python-dev python3-dev unzip \
+        libglib2.0-dev libpixman-1-dev git rsync wget cpio
+    git clone https://github.com/project-starch/transcapstone-sim.git
+    cd transcapstone-sim
+    git submodule update --init --recursive --progress
+    make -j4 spike-fw
+
+%environment
+    export SPIKE_PATH=./toolchain/bin/spike
+
+%runscript
+    cd /transcapstone-sim
+    {SPIKE_PATH} $@
+
+%labels
+    Author Mingkai Li
+
+%help
+    Container running Spike simulation of Capstone-RISC-V.
