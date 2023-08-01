@@ -7,14 +7,17 @@ The simulation of Capstone extension follows the [Capstone-RISC-V ISA](https://c
 
 The functions of each folder in the project are as follows:
 
-|       Folder        |      Description       |   Version   |
-| :-----------------: | :--------------------: | :---------: |
-|    repo/buildroot    |    Build Initramfs     |  2021.2.x  |
-|      repo/linux      |      Linux Kernel      |    5.12.0    |
-| repo/riscv-gnu-toolchain | GNU Compiler Toolchain |  gcc 10.2.0 ld 2.36  |
-| repo/riscv-(isa-sim,pk)  | Simulator & Bootloader |    master   |
-| repo/opensbi  | Supervisor / Bootloader |    master   |
-|         conf        |     Config for SDK     |             |
+| Folder | Description | Version | Capstone Adaption/Specific |
+| :----: | :---------: | :-----: | :-----------------: |
+|  container  |  Apptainer image for the SDK  |  -  |  -  |
+|  repo/buildroot  |  Build Initramfs  |  2021.11  |  No  |
+|  repo/linux  |  Linux Kernel  |  5.16.0  |  Yes  |
+|  repo/riscv-gnu-toolchain  |  GNU Compiler Toolchain  |  gcc 11  |  No  |
+|  repo/riscv-pk  |  Bootloader  |  -  |  No  |
+|  repo/riscv-isa-sim  |  Simulator  |  -  |  Yes  |
+|  repo/opensbi  |  Supervisor / Bootloader  |  -  |  No  |
+|  repo/capstone-testsuite  |  Test suite for Capstone-RISC-V  |  -  |  Yes  |
+|  conf  |  Config for SDK  |  -  |  -  |
 
 ## Quick Start
 
