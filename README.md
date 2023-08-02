@@ -32,6 +32,9 @@ cd transcapstone-sim/container
 make
 ```
 
+If you want to run the simulation of Pure Capstone, you can use  `make capstone-sim TARGET-PROGRAM=<path-to-your-program>`
+instead of `make`.
+
 If you have your own Apptainer image and want to prevent `make` from building one, you can set `EXTERNAL_CONTAINER_IMG`:
 
 ```
@@ -86,21 +89,23 @@ make SPIKE_SECURE_MEM=0x100000000:0x40000000
 If you want to run Spike using its interface in CLI, you can make changes to the following command:
 
 ```bash
-make spike-fw
+make spike
+make fw-image
 ```
 
 ```bash
-./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -D --kernel ./build/linux/arch/riscv/boot/Image ./build/opensbi/platform/generic/firmware/fw_jump.elf
+./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 --kernel ./build/linux/arch/riscv/boot/Image ./build/opensbi/platform/generic/firmware/fw_jump.elf
 ```
 
 If you want to run Spike using proxy kernel, you can make changes to the following command:
 
 ```bash
-make spike-pk
+make spike
+make pk
 ```
 
 ```bash
-./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -D ./build/riscv-pk/pk [path-to-your-program]
+./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -P ./build/riscv-pk/pk [path-to-your-program]
 ```
 
 ## File System in Simulation

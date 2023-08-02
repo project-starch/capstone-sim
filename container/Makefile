@@ -1,6 +1,6 @@
-SPIKE = ./toolchain/bin/spike
 LINUX_IMAGE = ./build/linux/arch/riscv/boot/Image 
-FW_JUMP = ./build/opensbi/platform/generic/firmware/fw_jump.elf
+FW_IMAGE = ./build/opensbi/platform/generic/firmware/fw_jump.elf
+PK = ./build/riscv-pk/pk
 ISA ?= rv64imafdc
 SPIKE_NCORES ?= 1
 SPIKE_NORMAL_MEM ?= 0x80000000:0x80000000
@@ -16,8 +16,13 @@ else
 CONTAINER_IMG=$(EXTERNAL_CONTAINER_IMG)
 endif
 
-all: $(CONTAINER_IMG)
-	$(SPIKE) --isa=$(ISA) -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} --kernel $(LINUX_IMAGE) $(FW_JUMP)
+all: transcapstone-sim
+
+transcapstone-sim: $(CONTAINER_IMG)
+	$(CONTAINER_IMG) --isa=$(ISA) -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} --kernel $(LINUX_IMAGE) $(FW_IMAGE)
+
+capstone-sim: $(CONTAINER_IMG)
+	$(CONTAINER_IMG) --isa=$(ISA) -p1 -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} -P ${PK} ${TARGET_PROGRAM}
 
 clean:
 	rm -f $(CONTAINER_IMG)

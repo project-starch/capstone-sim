@@ -187,11 +187,13 @@ $(qemu): $(qemu_srcdir)
 	touch -c $@
 
 
-.PHONY: buildroot_initramfs_sysroot vmlinux bbl fw_jump
+.PHONY: buildroot_initramfs_sysroot vmlinux bbl fw_image spike pk
 buildroot_initramfs_sysroot: $(buildroot_initramfs_sysroot)
 vmlinux: $(vmlinux)
 bbl: $(bbl)
 fw_image: $(fw_jump)
+spike: $(spike)
+pk: $(pk)
 
 .PHONY: clean
 clean:
@@ -211,13 +213,6 @@ qemu: $(qemu) $(fw_jump)
 .PHONY: sim-transcapstone
 sim-transcapstone: $(fw_jump) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} --kernel $(linux_image) $(fw_jump)
-
-# Only build dependencies
-.PHONY: spike-fw
-spike-fw: $(fw_jump) $(spike)
-# Use Spike with Proxy Kernel
-.PHONY: spike-pk
-spike-pk: $(pk), $(spike)
 
 # Debugging
 .PHONY: debug-transcapstone
