@@ -105,7 +105,7 @@ make pk
 ```
 
 ```bash
-./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 -P ./build/riscv-pk/pk [path-to-your-program]
+./toolchain/bin/spike --isa=rv64imafdc -p1 -m0x80000000:0x80000000 -M0x100000000:0x80000000 ./build/riscv-pk/pk [path-to-your-program]
 ```
 
 ## File System in Simulation
