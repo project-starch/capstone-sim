@@ -63,8 +63,6 @@ sudo make
 
 ## Specify Spike Parameters
 
-> Note: Build the SDK first. You can use `sudo make spike-pk` to build without running the simulation.
-
 ### Specify the number of harts
 
 The default is 1. To override this number, set the `SPIKE_NCORES` variable for `make`.
