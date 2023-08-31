@@ -16,13 +16,10 @@ else
 CONTAINER_IMG=$(EXTERNAL_CONTAINER_IMG)
 endif
 
-all: transcapstone-sim
+all: sim
 
-transcapstone-sim: $(CONTAINER_IMG)
+sim: $(CONTAINER_IMG)
 	$(CONTAINER_IMG) --isa=$(ISA) -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} --kernel $(LINUX_IMAGE) $(FW_IMAGE)
-
-capstone-sim: $(CONTAINER_IMG)
-	$(CONTAINER_IMG) --isa=$(ISA) -p1 -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} ${PK} ${TARGET_PROGRAM}
 
 clean:
 	rm -f $(CONTAINER_IMG)
