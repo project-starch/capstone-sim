@@ -22,8 +22,5 @@ From: ubuntu:20.04
     cd /transcapstone-sim
     ./toolchain/bin/spike $@
 
-%labels
-    Author Mingkai Li
-
 %help
     Container running Spike simulation of Capstone-RISC-V.

@@ -21,6 +21,8 @@ The functions of each folder in the project are as follows:
 
 ## Quick Start
 
+> Note: the apptainer image hasn't been tested yet. Please refer to `Build the SDK` for now.
+
 The easiest way to get started is to use the [Apptainer](https://apptainer.org/) image defined in the `container` folder.
 This will build the toolchain and the [Spike](https://github.com/project-starch/transcapstone-spike) simulator,
 and then run the simulation of the Capstone-RISC-V processor.
@@ -31,9 +33,6 @@ git clone https://github.com/project-starch/transcapstone-sim.git
 cd transcapstone-sim/container
 make
 ```
-
-If you want to run the simulation of Pure Capstone, you can use  `make capstone-sim TARGET-PROGRAM=<path-to-your-program>`
-instead of `make`.
 
 If you have your own Apptainer image and want to prevent `make` from building one, you can set `EXTERNAL_CONTAINER_IMG`:
 
