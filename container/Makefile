@@ -16,7 +16,7 @@ else
 CONTAINER_IMG=$(EXTERNAL_CONTAINER_IMG)
 endif
 
-all: sim
+all: $(CONTAINER_IMG)
 
 sim: $(CONTAINER_IMG)
 	$(CONTAINER_IMG) --isa=$(ISA) -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} --kernel $(LINUX_IMAGE) $(FW_IMAGE)
@@ -24,4 +24,4 @@ sim: $(CONTAINER_IMG)
 clean:
 	rm -f $(CONTAINER_IMG)
 
-.PHONY: all clean
+.PHONY: all clean sim

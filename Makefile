@@ -56,7 +56,7 @@ target_linux  := riscv64-unknown-linux-gnu
 target_newlib := riscv64-unknown-elf
 
 .PHONY: all
-all: sim-transcapstone
+all: sim-capstone
 
 newlib: $(RISCV)/bin/$(target_newlib)-gcc
 
@@ -209,20 +209,20 @@ sim: $(fw_jump) $(spike)
 qemu: $(qemu) $(fw_jump)
 	$(qemu) -nographic -machine virt -m 256M -bios $(fw_jump) -kernel $(linux_image) \
 		-netdev user,id=net0 -device virtio-net-device,netdev=net0
-# Simulate TransCasptone (Capstone-RISC-V)
-.PHONY: sim-transcapstone
-sim-transcapstone: $(fw_jump) $(spike)
+# Simulate Capstone-RISC-V Linux
+.PHONY: sim-capstone
+sim-capstone: $(fw_jump) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} --kernel $(linux_image) $(fw_jump)
 
 # Debugging
-.PHONY: debug-transcapstone
-debug-transcapstone: $(fw_jump) $(spike)
+.PHONY: debug-capstone
+debug-capstone: $(fw_jump) $(spike)
 	$(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
-.PHONY: gdb-transcapstone
-gdb-transcapstone: $(fw_jump) $(spike)
+.PHONY: gdb-capstone
+gdb-capstone: $(fw_jump) $(spike)
 	gdb --args $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
-.PHONY: valgrind-transcapstone
-valgrind-transcapstone: $(fw_jump) $(spike)
+.PHONY: valgrind-capstone
+valgrind-capstone: $(fw_jump) $(spike)
 	valgrind --leak-check=full $(spike) --isa=$(ISA) -p$(SPIKE_NCORES) -M${SPIKE_SECURE_MEM} -D --kernel $(linux_image) $(fw_jump)
 
 else ifeq ($(BL),bbl)
