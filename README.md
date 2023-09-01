@@ -1,9 +1,9 @@
 # The Capstone-RISC-V Spike Simulator SDK
 
 The Capstone-RISC-V Spike Simulator SDK is based on the [RSS SDK](https://github.com/riscv-zju/riscv-rss-sdk).
-The simulator simulates a RISC-V processor with the Capstone extension.
+The simulator simulates a RISC-V processor with the Capstone-RISC-V extension.
 A Linux kernel is loaded in the normal world and the simulator is started.
-The simulation of Capstone extension follows the [Capstone-RISC-V ISA](https://capstone.kisp-lab.org/specs/) and can be used in the secure world.
+The simulation of Capstone-RISC-V extension follows the [Capstone-RISC-V ISA](https://capstone.kisp-lab.org/specs/).
 
 The functions of each folder in the project are as follows:
 
@@ -21,16 +21,16 @@ The functions of each folder in the project are as follows:
 
 ## Quick Start
 
-> Note: the apptainer image hasn't been tested yet. Please refer to `Build the SDK` for now.
+> Note: "Build the SDK" is more recommended for developers.
 
 The easiest way to get started is to use the [Apptainer](https://apptainer.org/) image defined in the `container` folder.
-This will build the toolchain and the [Spike](https://github.com/project-starch/transcapstone-spike) simulator,
+This will build the toolchain and the [Capstone-RISC-V Spike](https://github.com/project-starch/capstone-spike) simulator,
 and then run the simulation of the Capstone-RISC-V processor.
 Make sure you have Apptainer already installed and simply run `make` inside the `container` folder.
 
 ```bash
-git clone https://github.com/project-starch/transcapstone-sim.git
-cd transcapstone-sim/container
+git clone https://github.com/project-starch/capstone-sim.git
+cd capstone-sim/container
 make
 ```
 
@@ -42,7 +42,7 @@ make EXTERNAL_CONTAINER_IMG=<path-to-your-image>
 
 ## Build the SDK
 
-Build dependencies on Ubuntu 16.04/18.04/20.04:
+**Ubuntu 16.04/18.04/20.04:**
 
 > **Note: Do not set `$RISCV` and make sure no origin RISC-V toolchain in your `$PATH`.**
 
@@ -54,8 +54,8 @@ libglib2.0-dev libpixman-1-dev git rsync wget cpio
 ```
 
 ```bash
-git clone https://github.com/project-starch/transcapstone-sim.git
-cd transcapstone-sim
+git clone https://github.com/project-starch/capstone-sim.git
+cd capstone-sim
 git submodule update --init --recursive --progress
 sudo make
 ```
@@ -63,6 +63,8 @@ sudo make
 ## Specify Spike Parameters
 
 ### Specify the number of harts
+
+> Note: Multi-hart support is still under development for Capstone-RISC-V ISA. It's recommended to keep the default value for now.
 
 The default is 1. To override this number, set the `SPIKE_NCORES` variable for `make`.
 For example:
@@ -86,8 +88,8 @@ make SPIKE_SECURE_MEM=0x100000000:0x40000000
 If you want to run Spike using its interface in CLI, you can make changes to the following command:
 
 ```bash
-make spike
 make fw-image
+make spike
 ```
 
 ```bash
@@ -123,17 +125,17 @@ you need to update the timestamp of the submodules first and rebuild the SDK.
 To enable debugging instructions in Spike, use
 
 ```bash
-make debug-transcapstone
+make debug-capstone
 ```
 
 To debug Spike using GDB with debugging instructions, use 
 
 ```bash
-make gdb-transcapstone
+make gdb-capstone
 ```
 
 To check memory leak of Spike using Valgrind with debugging instructions, use 
 
 ```bash
-make valgrind-transcapstone
+make valgrind-capstone
 ```
