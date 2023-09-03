@@ -20,7 +20,7 @@ The functions of each folder in the project are as follows:
 
 ## Quick Start
 
-> Note: "Build the SDK" is more recommended for developers.
+> Note: "Build the SDK" is more flexible, and is highly recommended for developers.
 
 The easiest way to get started is to use the [Apptainer](https://apptainer.org/) image defined in the `container` folder.
 This will build the toolchain and the [Capstone-RISC-V Spike](https://github.com/project-starch/capstone-spike) simulator,
@@ -32,6 +32,9 @@ git clone https://github.com/project-starch/capstone-sim.git
 cd capstone-sim/container
 make
 ```
+
+This will build an Apptainer image (`capstone_sim.sif`) under the `container` folder.
+You can provide the parameters to the image by yourself, or simply run `make sim`, which runs the simulation with the default parameters.
 
 If you have your own Apptainer image and want to prevent `make` from building one, you can set `EXTERNAL_CONTAINER_IMG`:
 
