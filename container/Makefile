@@ -1,11 +1,3 @@
-LINUX_IMAGE = ./build/linux/arch/riscv/boot/Image 
-FW_IMAGE = ./build/opensbi/platform/generic/firmware/fw_jump.elf
-PK = ./build/riscv-pk/pk
-ISA ?= rv64imafdc
-SPIKE_NCORES ?= 1
-SPIKE_NORMAL_MEM ?= 0x80000000:0x80000000
-SPIKE_SECURE_MEM ?= 0x100000000:0x80000000
-
 ifndef EXTERNAL_CONTAINER_IMG
 CONTAINER_DEF=capstone_sim.def
 CONTAINER_IMG=capstone_sim.sif
@@ -18,10 +10,7 @@ endif
 
 all: $(CONTAINER_IMG)
 
-sim: $(CONTAINER_IMG)
-	$(CONTAINER_IMG) --isa=$(ISA) -p$(SPIKE_NCORES) -m${SPIKE_NORMAL_MEM} -M${SPIKE_SECURE_MEM} --kernel $(LINUX_IMAGE) $(FW_IMAGE)
-
 clean:
 	rm -f $(CONTAINER_IMG)
 
-.PHONY: all clean sim
+.PHONY: all clean
