@@ -159,7 +159,7 @@ $(pk): $(pk_srcdir) $(RISCV)/bin/$(target_newlib)-gcc
 	CFLAGS="-mabi=$(ABI) -march=$(ISA)" $(MAKE) -C $(pk_wrkdir)
 	$(MAKE) -C $(pk_wrkdir) install
 
-$(fw_jump): $(opensbi_srcdir) $(linux_image) $(RISCV)/bin/$(target_linux)-gcc
+$(fw_jump): $(RISCV)/bin/$(target_linux)-gcc $(opensbi_srcdir) $(linux_image)
 	rm -rf $(opensbi_wrkdir)
 	mkdir -p $(opensbi_wrkdir)
 	$(MAKE) -C $(opensbi_srcdir) FW_PAYLOAD_PATH=$(linux_image) PLATFORM=generic O=$(opensbi_wrkdir) CROSS_COMPILE=riscv64-unknown-linux-gnu-
