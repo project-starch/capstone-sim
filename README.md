@@ -11,7 +11,7 @@ The functions of each folder in the project are as follows:
 | :----: | :---------: | :-----: | :-----------------: |
 |  container  |  Apptainer image for the SDK  |  -  |  -  |
 |  repo/buildroot  |  Build Initramfs  |  2021.11  |  No  |
-|  repo/linux  |  Linux Kernel  |  5.16.0  |  Yes  |
+|  repo/linux  |  Linux Kernel  |  5.16.0  |  No  |
 |  repo/riscv-gnu-toolchain  |  GNU Compiler Toolchain  |  gcc 11  |  No  |
 |  repo/riscv-pk  |  Bootloader  |  -  |  No  |
 |  repo/riscv-isa-sim  |  Simulator  |  -  |  Yes  |
