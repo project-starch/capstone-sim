@@ -11,16 +11,10 @@ From: ubuntu:20.04
         curl libmpc-dev libmpfr-dev libgmp-dev gawk build-essential bison flex texinfo \
         gperf libtool patchutils bc zlib1g-dev libexpat-dev python-dev python3-dev unzip \
         libglib2.0-dev libpixman-1-dev git rsync wget cpio
-    git clone https://github.com/project-starch/capstone-sim.git
-    cd capstone-sim
-    git submodule update --init --recursive --progress
-    make fw_image
-    make spike
-    make pk
 
 %runscript
-    cd /capstone-sim
-    ./toolchain/bin/spike $@
+    cd ..
+    make
 
 %labels
     Author: The Capstone Team
