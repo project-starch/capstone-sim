@@ -16,7 +16,6 @@ The functions of each folder in the project are as follows:
 |  repo/riscv-pk  |  Bootloader  |  -  |  No  |
 |  repo/riscv-isa-sim  |  Simulator  |  -  |  Yes  |
 |  repo/opensbi  |  Supervisor / Bootloader  |  -  |  No  |
-|  repo/capstone-testsuite  |  Test suite for Capstone-RISC-V  |  -  |  Yes  |
 |  conf  |  Config for SDK  |  -  |  -  |
 
 ## Quick Start
